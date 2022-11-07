@@ -2,26 +2,22 @@
 
 public class InteractCommand : Command
 {
-    private GameObject _currentBanana;
-    private bool _killedABanana;
+    private PickUpCommand _banane;
     public override void Do(Cube cube)
     {
         if (cube.InteractWithBanana && cube.BananaObject != null)
         {
-            _currentBanana = cube.BananaObject;
-            var bananaCommand = new PickUpCommand(_currentBanana);
-            bananaCommand.Do(cube);
+            _banane = new PickUpCommand(cube.BananaObject);
+            _banane.Do(cube);
             cube.InteractWithBanana = false;
-            _killedABanana = true;
         }
     }
 
     public override void Undo(Cube cube)
     {
-        if (_killedABanana)
+        if (_banane != null)
         {
-            var bananaCommand = new PickUpCommand(_currentBanana);
-            bananaCommand.Undo(cube);
+            _banane.Undo(cube);
         }
     }
 }
